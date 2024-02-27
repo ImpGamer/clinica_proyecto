@@ -16,6 +16,8 @@ public class Cliente {
     private Long id;
     @Column(nullable = false,length = 30)
     private String nombre;
+    @Column(nullable = false,length = 30)
+    private String apellido;
     @Column(length = 2,nullable = false)
     private int edad;
     @Column(nullable = false,length = 40)

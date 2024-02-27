@@ -1,0 +1,21 @@
+div {
+    text-align: left; /* Texto alineado a la izquierda */
+    display: flex; /* Contenido centrado horizontalmente */
+    flex-direction: column; /* Contenido centrado verticalmente */
+    justify-content: center; /* Contenido centrado verticalmente */
+    align-items: center; /* Contenido centrado horizontalmente */
+    height: 100vh; /* Altura igual al 100% del viewport */
+    background-color: #f0f0f0; /* Color de fondo gris claro */
+}
+
+/* Estilos para el título h1 */
+h1 {
+    font-size: 2.5em; /* Tamaño de la fuente más grande */
+    color: green; /* Color de texto verde */
+}
+
+/* Estilos para los párrafos */
+p {
+    color: rgba(0, 0, 0, 0.7); /* Color de texto gris semi-transparente */
+    margin: 10px 0; /* Margen superior e inferior de 10px */
+}

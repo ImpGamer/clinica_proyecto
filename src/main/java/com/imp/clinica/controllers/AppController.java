@@ -11,4 +11,8 @@ public class AppController {
     String inicio() {
         return "index";
     }
+    @GetMapping("/sobreNosotros")
+    String paginaSobreNosotros() {
+        return "aboutUs";
+    }
 }

@@ -28,12 +28,13 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" th:href="@{/citas/consulta}">Ver Citas Disponibles</a></li>
-                                <li><a class="dropdown-item" href="#">Agendar Cita</a></li>
-                                <li><a href="#" class="dropdown-item">Doctores a tu servicio</a></li>
+                                <li><a class="dropdown-item" th:href="@{/agendarCita}">Agendar Cita</a></li>
+                                <li><a th:href="@{/medicos}"  class="dropdown-item">Doctores a tu servicio</a></li>
                                 <br>
                                 <li>Administrador</li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a href="#" class="dropdown-item">Administrar citas</a></li>
+                                <li><a th:href="@{/administrar/citasAlmacenadas}" class="dropdown-item">Administrar citas</a></li>
+                                <li><a href="#" class="dropdown-item">Administrar doctores</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -55,7 +56,7 @@
                     <form th:action="@{/citas/consulta}" method="get">
                         <div class="form-group">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="disponibles" id="todas" value="false">
+                                <input class="form-check-input" type="radio" name="disponibles" id="todas" value="false" checked>
                                 <label class="form-check-label" for="todas">Mostrar todas las citas</label>
                             </div>
                             <div class="form-check">
@@ -70,21 +71,25 @@
         </div>
         <!--Listado de citas-->
         <div class="container">
-            <h2 th:if="${msgError}" class="alert alert-warning"></h2>
-            <table class="table table-bordered mt-3">
+            <div th:if="${msgError!=null}" class="alert alert-warning">
+                <h2 th:text="${msgError}"></h2>
+            </div>
+            <table class="table table-bordered mt-3 text-center">
                 <thead class="table-warning fw-bold">
-                <tr class="text-center">
+                <tr>
                     <td>Tratamiento</td>
                     <td>Fecha Cita</td>
-                    <td>Disponible</td>
+                    <td>Estado</td>
+                    <td>Doctor Asignado</td>
                 </tr>
                 </thead>
                 <tbody>
                     <tr th:each="cita:${listaCitas}">
-                        <td th:text="${cita.getNombre()}"></td>
+                        <td th:text="${cita.getTratamiento()}"></td>
                         <td th:text="${#temporals.format(cita.getFechaCita(), 'dd/MM/yyyy HH:mm')}"></td>
                         <td th:text="${cita.isDisponible()?'Disponible':'No Disponible'}" th:style="${cita.isDisponible()?'color: green;':
                         'color: red;'}"></td>
+                        <td>Dr. <span th:text="${cita.medico_id.nombre}"></span></td>
                     </tr>
                 </tbody>
             </table>

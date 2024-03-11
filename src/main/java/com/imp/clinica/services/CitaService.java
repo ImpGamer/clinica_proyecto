@@ -9,4 +9,5 @@ public interface CitaService {
     void eliminarCita(Long id);
     void agregarCita(Cita cita)throws Exception;
     void editarCita(Long id,Cita cita)throws Exception;
+    Long cantCitas();
 }

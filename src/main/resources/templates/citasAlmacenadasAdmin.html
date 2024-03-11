@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Clinic Web | Adminstracion</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/inicio}">Clinic Web</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/inicio}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/inicio/sobreNosotros}">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Agenda tu Cita
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" th:href="@{/citas/consulta}">Ver Citas Disponibles</a></li>
+                            <li><a class="dropdown-item" th:href="@{/agendarCita}">Agendar Cita</a></li>
+                            <li><a th:href="@{/medicos}"  class="dropdown-item">Doctores a tu servicio</a></li>
+                            <br>
+                            <li>Administrador</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a th:href="@{/administrar/citasAlmacenadas}" class="dropdown-item">Administrar citas</a></li>
+                            <li><a href="#" class="dropdown-item">Administrar doctores</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div th:if="${msgExito!=null}" class="alert alert-success">
+        <p th:text="${msgExito}"></p>
+    </div>
+    <!--Titulo de cabecera y formulario para filtro de busqueda-->
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between">
+            <div class="text-left text-success">
+                <h1 class="fw-bold" style="font-size: 5em">Clinic Web</h1>
+                <p class="fs-2">Administracion de citas Almacenadas</p>
+            </div>
+        </div>
+    </div>
+    <!--Listado de citas-->
+    <div class="container">
+        <div th:if="${msgError!=null}" class="alert alert-warning">
+            <h2 th:text="${msgError}" class="fw-bold fs-2"></h2>
+        </div>
+        <table class="table table-bordered mt-3 text-center">
+            <thead class="table-dark fw-bold">
+            <tr>
+                <td>Tratamiento</td>
+                <td>Fecha Cita</td>
+                <td>Estado</td>
+                <td>Doctor Asignado</td>
+                <td colspan="2"></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cita:${listaCitas}">
+                <td th:text="${cita.getTratamiento()}"></td>
+                <td th:text="${#temporals.format(cita.getFechaCita(), 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${cita.isDisponible()?'Disponible':'No Disponible'}" th:style="${cita.isDisponible()?'color: green;':
+                        'color: red;'}"></td>
+                <td>Dr. <span th:text="${cita.medico_id.nombre}"></span></td>
+                <td colspan="2">
+                    <a th:href="@{/citas/editar/{id}(id=${cita.getId()})}" class="btn btn-warning me-2">Editar</a><!-- Agregamos la clase "me-2" para agregar un margen a la derecha -->
+                    <button class="btn btn-danger delete-button" th:disabled="${!cita.isDisponible()}">Eliminar</button>
+                    <form th:action="@{/citas/{id}(id=${cita.getId()})}" id="delete-form" method="get"></form>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot class="table-info text-center fw-bold fs-5">
+                <tr>
+                    <td colspan="5"><span>Citas Registradas: </span><span th:text="${cantidadCitas}"></span></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="mt-4">
+            <a th:href="@{/citas/nuevaCita}" class="btn btn-primary fw-bold">Agregar Nueva Cita</a>
+            <a href="#" class="btn btn-secondary fw-bold">Administrar citas agendadas</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer mt-5 bg-info bg-gradient border border-warning border-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Enlaces</h4>
+                <ul class="list-unstyled">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Contacto</h4>
+                <address>
+                    <strong>Empresa XYZ</strong><br>
+                    Calle Principal, 123<br>
+                    Ciudad, Estado<br>
+                    <abbr title="Teléfono">Tel:</abbr> (123) 456-7890
+                </address>
+            </div>
+            <div class="col-md-4">
+                <h4>Síguenos</h4>
+                <ul class="list-unstyled list-inline">
+                    <li>
+                            <span>
+                                <a href="#"><img src="https://iconos8.es/icon/8824/twitter" alt="Twitter"></a>
+                            </span>
+                    </li>
+                    <li>
+                            <span>
+                                <a href="#"><img src="https://iconos8.es/icon/8818/facebook" alt="Facebook"/></a>
+                            </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<script>
+    const buttons = document.getElementsByClassName("delete-button")
+    for(let i=0;i<buttons.length;i++) {
+        buttons[i].addEventListener("click",eliminarCita)
+    }
+    function eliminarCita() {
+        const form_delete = document.getElementById("delete-form")
+
+        let yes= confirm("Seguro que deseas eliminar esta cita?")
+        if(yes) {
+            form_delete.submit();
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

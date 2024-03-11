@@ -31,12 +31,13 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" th:href="@{/citas/consulta}">Ver Citas Disponibles</a></li>
-                                <li><a class="dropdown-item" href="#">Agendar Cita</a></li>
-                                <li><a href="#" class="dropdown-item">Doctores a tu servicio</a></li>
+                                <li><a class="dropdown-item" th:href="@{/agendarCita}">Agendar Cita</a></li>
+                                <li><a th:href="@{/medicos}" class="dropdown-item">Doctores a tu servicio</a></li>
                                 <br>
                                 <li>Administrador</li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a href="#" class="dropdown-item">Administrar citas</a></li>
+                                <li><a th:href="@{/administrar/citasAlmacenadas}" class="dropdown-item">Administrar citas</a></li>
+                                <li><a href="#" class="dropdown-item">Administrar doctores</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -67,7 +68,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Agenda una Cita</h5>
                             <p class="card-text">Ya puedes consultar o agendar una cita desde aqui. Para que tengas el cuidado sin salir de casa.</p>
-                            <a href="#" class="btn btn-success btn-lg">Agenda tu cita!</a>
+                            <a th:href="@{/agendarCita}" class="btn btn-success btn-lg">Agenda tu cita!</a>
                         </div>
                     </div>
                 </div>

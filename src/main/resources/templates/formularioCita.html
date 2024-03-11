@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Agendar una cita</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/inicio}">Clinic Web</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/inicio}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/inicio/sobreNosotros}">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Agenda tu Cita
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" th:href="@{/citas/consulta}">Ver Citas Disponibles</a></li>
+                            <li><a class="dropdown-item" th:href="@{/agendarCita}">Agendar Cita</a></li>
+                            <li><a th:href="@{/medicos}"  class="dropdown-item">Doctores a tu servicio</a></li>
+                            <br>
+                            <li>Administrador</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a th:href="@{/administrar/citasAlmacenadas}" class="dropdown-item">Administrar citas</a></li>
+                            <li><a href="#" class="dropdown-item">Administrar doctores</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container text-left text-success mt-5">
+        <h2 class="fw-bold" style="font-size: 3em">Agendar una cita</h2>
+        <p>Ingresa tus datos para agendar una cita</p>
+    </div>
+    <div class="container mt-5">
+        <form th:action="${direccion}" th:object="${cita}" method="post" class="row g-3 border border-dark p-3">
+            <fieldset>
+                <legend>Informacion Personal del Cliente</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre Completo:
+                            <input type="text" th:field="*{cliente.nombre}" class="form-control">
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Edad:
+                            <input type="number" th:field="*{cliente.edad}" class="form-control" required>
+                            <p class="form-text">Ingrese la edad del cliente, esto lo usamos como referencia para considerar el tipo de tratamiento</p>
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Apellidos:
+                            <input type="text" th:field="*{cliente.apellido}" class="form-control">
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Correo Electronico:
+                            <input type="email" th:field="*{cliente.correo}" class="form-control">
+                            <p class="form-text">Ingrese un correo electrónico válido, para contactarnos con usted en caso que se requiera</p>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="text-right">
+                <legend>Seleccion de Cita</legend>
+                <div class="d-flex justify-content-end">
+                    <div class="col-md-4">
+                        <label class="form-label">Elegir Cita:
+                            <select class="form-select" th:field="*{cita_id}">
+                                <th:block th:each="cita:${listaCitas}">
+                                    <option th:text="${cita.getTratamiento()}" th:disabled="${!cita.isDisponible()}" th:value="${cita.getId()}"></option>
+                                    <p th:if="${msgError!=null}" class="alert alert-warning"></p>
+                                </th:block>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <div th:if="${msgCitaError!=null}" class="alert alert-danger">
+                <p th:text="${msgCitaError}" class="fw-bold"></p>
+            </div>
+            <div class="col-md-4"> <!-- Agrupa el botón en su propio div con col-md-4 -->
+                <button type="submit" class="btn btn-primary btn-lg fw-bold">Agendar cita</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="footer mt-5 bg-info bg-gradient border border-warning border-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Enlaces</h4>
+                <ul class="list-unstyled">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Contacto</h4>
+                <address>
+                    <strong>Empresa XYZ</strong><br>
+                    Calle Principal, 123<br>
+                    Ciudad, Estado<br>
+                    <abbr title="Teléfono">Tel:</abbr> (123) 456-7890
+                </address>
+            </div>
+            <div class="col-md-4">
+                <h4>Síguenos</h4>
+                <ul class="list-unstyled list-inline">
+                    <li>
+                            <span>
+                                <a href="#"><img src="https://iconos8.es/icon/8824/twitter" alt="Twitter"></a>
+                            </span>
+                    </li>
+                    <li>
+                            <span>
+                                <a href="#"><img src="https://iconos8.es/icon/8818/facebook" alt="Facebook"/></a>
+                            </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -49,10 +49,13 @@ public class CitaServiceImpl implements CitaService {
     public void agregarCita(Cita cita)throws Exception {
         LocalDateTime fechaActual = LocalDateTime.now();
 
-        if(cita.getFechaCita().isAfter(fechaActual) && !cita.getNombre().isEmpty()) {
+        if(cita.getFechaCita() == null) {
+            throw new Exception("Agregue una fecha y hora para la cita");
+        }
+        if(cita.getFechaCita().isAfter(fechaActual) && !cita.getTratamiento().isEmpty()) {
             citaRepository.save(cita);
         } else {
-            throw new Exception("No se a colocado un titulo o la fecha de la cita es pasada\nVerifique sus datos");
+            throw new Exception("No se a colocado un titulo o la fecha de la cita es pasada. Verifique sus datos");
         }
     }
     @Override
@@ -61,13 +64,21 @@ public class CitaServiceImpl implements CitaService {
         Cita citaBBDD = citaRepository.findById(id).orElse(null);
 
         if(citaBBDD != null) {
-            if(cita.getFechaCita().isAfter(fechaActual) && !cita.getNombre().isEmpty()) {
-                citaBBDD.setNombre(cita.getNombre());
+            if(cita.getFechaCita()==null) {
+                throw new Exception("Agregue una fecha y hora para la cita");
+            }
+            if(cita.getFechaCita().isAfter(fechaActual) && !cita.getTratamiento().isEmpty()) {
+                citaBBDD.setTratamiento(cita.getTratamiento());
                 citaBBDD.setFechaCita(cita.getFechaCita());
                 citaRepository.save(citaBBDD);
             } else {
                 throw new Exception("No se a colocado un titulo o la fecha de la cita es pasada\nVerifique sus datos");
             }
         }
+    }
+
+    @Override
+    public Long cantCitas() {
+        return citaRepository.count();
     }
 }

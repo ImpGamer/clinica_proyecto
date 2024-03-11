@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Confirmar Cita</title>
+    <style>
+        a:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand navButton" th:data-redirect="@{/inicio}">Clinic Web</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active navButton" aria-current="page" th:data-redirect="@{/inicio}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navButton" th:data-redirect="@{/inicio/sobreNosotros}">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Agenda tu Cita
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item navButton" th:data-redirect="@{/citas/consulta}">Ver Citas Disponibles</a></li>
+                            <li><a class="dropdown-item navButton" th:data-redirect="@{/agendarCita}">Agendar Cita</a></li>
+                            <li><a th:href="@{/medicos}"  class="dropdown-item navButton">Doctores a tu servicio</a></li>
+                            <br>
+                            <li>Administrador</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a th:href="@{/administrar/citasAlmacenadas}" class="dropdown-item navButton">Administrar citas</a></li>
+                            <li><a href="#" class="dropdown-item navButton">Administrar doctores</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="container mt-5 text-success">
+        <h1 style="font-size: 5vw" class="fw-bold">Confirmar Cita</h1>
+        <p class="fs-3">Revisa los datos y confirma el agendar tu cita</p>
+    </div>
+    <div class="container mt-5">
+        <table class="table table-bordered text-center">
+            <thead class="table-info">
+                <tr>
+                    <td class="fw-bold fs-3" colspan="4">DATOS DEL CLIENTE</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="fw-bold">
+                    <td>Nombre Completo</td>
+                    <td>Apellido Completo</td>
+                    <td>Edad</td>
+                    <td>Correo Electronico</td>
+                </tr>
+                <tr class="text-center">
+                    <td th:text="${citaGuardada.getCliente().getNombre()}"></td>
+                    <td th:text="${citaGuardada.getCliente().getApellido()}"></td>
+                    <td><span th:text="${citaGuardada.getCliente().getEdad()}"></span> años</td>
+                    <td th:text="${citaGuardada.getCliente().getCorreo()}"></td>
+                </tr>
+                <tr class="table-warning">
+                    <td colspan="4" class="fw-bold fs-3">DATOS DE LA CITA</td>
+                </tr>
+                <tr class="fw-bold">
+                    <td>Tratamiento</td>
+                    <td>Fecha</td>
+                    <td>Hora</td>
+                    <td>Doctor Asignado</td>
+                </tr>
+                <tr>
+                    <td th:text="${citaGuardada.getCita_id().getTratamiento()}"></td>
+                    <td th:text="${#temporals.format(citaGuardada.getCita_id().getFechaCita(),'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(citaGuardada.cita_id.getFechaCita(),'HH:mm')}"></td>
+                    <td><span>Dr. </span><span th:text="${citaGuardada.getCita_id().getMedico_id().getNombre()}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form th:action="${direccion}" method="post" class="mt-5">
+            <button type="submit" class="btn btn-success">Confirmar Cita</button>
+            <a th:href="@{/agendarCita}" class="btn btn-danger">Cancelar</a>
+        </form>
+    </div>
+</main>
+
+<footer class="footer mt-5 bg-info bg-gradient border border-warning border-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Enlaces</h4>
+                <ul class="list-unstyled">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Contacto</h4>
+                <address>
+                    <strong>Empresa XYZ</strong><br>
+                    Calle Principal, 123<br>
+                    Ciudad, Estado<br>
+                    <abbr title="Teléfono">Tel:</abbr> (123) 456-7890
+                </address>
+            </div>
+            <div class="col-md-4">
+                <h4>Síguenos</h4>
+                <ul class="list-unstyled list-inline">
+                    <li>
+                            <span>
+                                <a href="#"><img src="https://iconos8.es/icon/8824/twitter" alt="Twitter"></a>
+                            </span>
+                    </li>
+                    <li>
+                            <span>
+                                <a href="#"><img src="https://iconos8.es/icon/8818/facebook" alt="Facebook"/></a>
+                            </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const classElements = document.getElementsByClassName("navButton")
+    for(let i=0;i<classElements.length;i++) {
+        classElements[i].addEventListener("click",abandonarConfirmacion)
+    }
+    function abandonarConfirmacion(event) {
+        event.preventDefault();
+        let yes = confirm("Deseas salir antes de confirmar tu cita? (tu cita no se guardara)")
+        if(yes) {
+            let redirect = event.target.dataset.redirect;
+            window.open(redirect,"_self");
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

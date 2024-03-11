@@ -17,17 +17,25 @@ public class Cita {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false,length = 20)
-    private String nombre;
+    private String tratamiento;
     @Column(nullable = false)
     private LocalDateTime fechaCita;
     @Column
     private boolean disponible;
+    @ManyToOne
+    @JoinColumn(name = "medico_id")
+    private Medico medico_id;
     @PrePersist
     void inciarCita() {
         this.disponible = true;
     }
-    public Cita(String nombre,LocalDateTime fechaCita) {
-        this.nombre = nombre;
+    public Cita(String tratamiento,LocalDateTime fechaCita,Medico medico) {
+        this.tratamiento = tratamiento;
         this.fechaCita = fechaCita;
+        this.medico_id = medico;
+    }
+    @Override
+    public String toString() {
+        return "Tratamiento: "+this.tratamiento+"\nFecha Cita: "+this.fechaCita+"\nDoctor: "+this.medico_id.getNombre();
     }
 }

@@ -14,12 +14,8 @@ public class CitaAgendada {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "medico_id")
-    private Medico medico_id;
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente_id;
+    @Embedded
+    private Cliente cliente;
     @OneToOne
     @JoinColumn(name = "cita_id")
     private Cita cita_id;

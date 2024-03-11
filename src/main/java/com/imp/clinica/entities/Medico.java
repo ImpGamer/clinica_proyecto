@@ -18,4 +18,8 @@ public class Medico {
     private String nombre;
     @Column(nullable = false,length = 2)
     private int edad;
+    public Medico(String nombre,int edad) {
+        this.nombre = nombre;
+        this.edad = edad;
+    }
 }

@@ -1,25 +1,21 @@
 package com.imp.clinica.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "CLIENTES")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 public class Cliente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false,length = 30)
     private String nombre;
-    @Column(nullable = false,length = 30)
     private String apellido;
-    @Column(length = 2,nullable = false)
     private int edad;
-    @Column(nullable = false,length = 40)
     private String correo;
+    @Override
+    public String toString() {
+        return "Nombre: "+this.nombre+"\nApellido: "+this.apellido+"\nEdad: "+this.edad+"\nCorreo: "+this.correo;
+    }
 }

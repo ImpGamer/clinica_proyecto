@@ -39,7 +39,6 @@
                             <li>Administrador</li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a th:href="@{/administrar/citasAlmacenadas}" class="dropdown-item navButton">Administrar citas</a></li>
-                            <li><a href="#" class="dropdown-item navButton">Administrar doctores</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -90,11 +89,11 @@
                 </tr>
             </tbody>
         </table>
-
-        <form th:action="${direccion}" method="post" class="mt-5">
+        <form th:action="${direccion}" method="post" class="mt-5" >
             <button type="submit" class="btn btn-success">Confirmar Cita</button>
             <a th:href="@{/agendarCita}" class="btn btn-danger">Cancelar</a>
         </form>
+
     </div>
 </main>
 

@@ -19,4 +19,8 @@ public class CitaAgendada {
     @OneToOne
     @JoinColumn(name = "cita_id")
     private Cita cita_id;
+    public CitaAgendada(Cliente cliente,Cita cita) {
+        this.cliente = cliente;
+        this.cita_id = cita;
+    }
 }

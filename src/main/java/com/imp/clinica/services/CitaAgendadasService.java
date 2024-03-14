@@ -10,4 +10,5 @@ public interface CitaAgendadasService {
     void crearCitaAgendada(CitaAgendada citaAgendada);
     void generarPDF();
     CitaAgendada almacenarDatos(CitaAgendada citaAgendada)throws Exception;
+    Long cantidadCitasAgendadas();
 }

@@ -23,12 +23,19 @@ public class CitaAgendadaServiceImpl implements CitaAgendadasService {
 
     @Override
     public CitaAgendada buscarCitaAgendada_ID(Long id) {
-        return null;
+        return citaAgendadaRepository.findById(id).orElse(null);
     }
 
     @Override
     public void eliminarCitaAgendada(Long id) {
+        CitaAgendada citaAgendadaBBDD = buscarCitaAgendada_ID(id);
+        Cita citaBBDD = citaRepository.findById(citaAgendadaBBDD.getCita_id().getId()).orElse(null);
 
+        if(citaBBDD != null) {
+            citaBBDD.setDisponible(true);
+            citaRepository.save(citaBBDD);
+        }
+        citaAgendadaRepository.deleteById(id);
     }
 
     @Override
@@ -58,5 +65,10 @@ public class CitaAgendadaServiceImpl implements CitaAgendadasService {
             throw new Exception("No se a seleccionado una cita");
         }
         return citaAgendada;
+    }
+
+    @Override
+    public Long cantidadCitasAgendadas() {
+        return citaAgendadaRepository.count();
     }
 }

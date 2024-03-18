@@ -7,8 +7,7 @@ public interface CitaAgendadasService {
     List<CitaAgendada> mostrarCitasAgendadas();
     CitaAgendada buscarCitaAgendada_ID(Long id);
     void eliminarCitaAgendada(Long id);
-    void crearCitaAgendada(CitaAgendada citaAgendada);
-    void generarPDF();
-    CitaAgendada almacenarDatos(CitaAgendada citaAgendada)throws Exception;
+    void crearCitaAgendada(CitaAgendada citaAgendada)throws Exception;
+    void almacenarDatos(CitaAgendada citaAgendada)throws Exception;
     Long cantidadCitasAgendadas();
 }

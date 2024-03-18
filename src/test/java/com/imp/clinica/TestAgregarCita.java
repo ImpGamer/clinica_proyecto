@@ -1,7 +1,10 @@
 package com.imp.clinica;
 
 import com.imp.clinica.entities.Cita;
+import com.imp.clinica.entities.CitaAgendada;
+import com.imp.clinica.entities.Cliente;
 import com.imp.clinica.entities.Medico;
+import com.imp.clinica.repositories.CitaAgendadaRepository;
 import com.imp.clinica.repositories.CitaRepository;
 import com.imp.clinica.repositories.MedicoRepository;
 import org.hibernate.grammars.hql.HqlParser;
@@ -25,14 +28,15 @@ public class TestAgregarCita {
     @Autowired
     private MedicoRepository medicoRepository;
     @Autowired
-    private CitaRepository citaRepository;
+    private CitaAgendadaRepository citaAgendadaRepository;
+
     @Test
     void agregarCita() {
-        Medico medico = entityManager.find(Medico.class,1);
-        LocalDateTime dateTime = LocalDateTime.of(2024,9,10,13,15);
+        Medico medico = entityManager.find(Medico.class,2);
+        LocalDateTime dateTime = LocalDateTime.of(2025,3,29,11,40);
 
-        Cita cita = new Cita("Limpieza Dental",dateTime,medico);
-        citaRepository.save(cita);
+        Cita cita = new Cita("Podologia",dateTime,medico);
+        entityManager.persist(cita);
     }
     @Test
     void agregarMedico() {
@@ -41,5 +45,12 @@ public class TestAgregarCita {
 
         assertThat(medico.getId()).isGreaterThan(0);
         assertThat(medico1.getId()).isGreaterThan(0);
+    }
+    @Test
+    void agregarCitaAgendada() {
+        Cita cita = entityManager.find(Cita.class,4);
+
+        CitaAgendada citaAgendada = new CitaAgendada(new Cliente("Axel","Hernandez",20,"axelHer932@gmail.com"),cita);
+        citaAgendadaRepository.save(citaAgendada);
     }
 }

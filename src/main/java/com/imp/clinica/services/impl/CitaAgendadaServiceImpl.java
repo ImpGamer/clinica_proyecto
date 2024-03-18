@@ -39,22 +39,20 @@ public class CitaAgendadaServiceImpl implements CitaAgendadasService {
     }
 
     @Override
-    public void crearCitaAgendada(CitaAgendada citaAgendada) {
+    public void crearCitaAgendada(CitaAgendada citaAgendada)throws Exception {
         Cita citaBBDD = citaRepository.findById(citaAgendada.getCita_id().getId()).orElse(null);
         if(citaBBDD != null) {
             citaBBDD.setDisponible(false);
             citaRepository.save(citaBBDD);
             citaAgendadaRepository.save(citaAgendada);
+        } else {
+            throw new Exception("Ha ocurrido un error al tratar de guardar la cita. Intente mas tarde o contactenos");
         }
     }
 
-    @Override
-    public void generarPDF() {
-
-    }
 
     @Override
-    public CitaAgendada almacenarDatos(CitaAgendada citaAgendada) throws Exception {
+    public void almacenarDatos(CitaAgendada citaAgendada) throws Exception {
         if(citaAgendada.getCliente().getNombre().length() < 3 || citaAgendada.getCliente().getApellido().length() < 3) {
             throw new Exception("El nombre del cliente no es valido");
         }
@@ -64,7 +62,6 @@ public class CitaAgendadaServiceImpl implements CitaAgendadasService {
         if(citaAgendada.getCita_id() == null) {
             throw new Exception("No se a seleccionado una cita");
         }
-        return citaAgendada;
     }
 
     @Override

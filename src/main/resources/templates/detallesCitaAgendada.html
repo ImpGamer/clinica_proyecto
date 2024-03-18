@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <title>Clinic Web | Adminstracion</title>
+    <title>Detalles Cita Agendada</title>
 </head>
 <body>
 <header>
@@ -41,61 +41,72 @@
         </div>
     </nav>
 </header>
-
-<main>
-    <div th:if="${msgExito!=null}" class="alert alert-success">
-        <p th:text="${msgExito}"></p>
-    </div>
-    <!--Titulo de cabecera y formulario para filtro de busqueda-->
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between">
-            <div class="text-left text-success">
-                <h1 class="fw-bold" style="font-size: 5em">Clinic Web</h1>
-                <p class="fs-2">Administracion de citas Almacenadas</p>
+    <main>
+        <div class="container mt-5">
+            <div class="text-success">
+                <h2 style="font-size: 14vh" class="fw-bold">Clinic Web</h2>
+                <p class="fs-5 fw-bold">Detalles de la cita agendada</p>
+            </div>
+            <!--Datos del cliente-->
+            <div class="mt-5 fs-3">
+                <p style="font-size: 3vh" class="fw-bold">Datos del Cliente:</p>
+            <div class="row">
+                <div class="col">
+                    <h6>Nombre:</h6>
+                    <p th:text="${citaAgendada.getCliente().getNombre()}"></p>
+                </div>
+                <div class="col-6">
+                    <h6>Apellido:</h6>
+                    <p th:text="${citaAgendada.cliente.getApellido()}"></p>
+                </div>
+                <div class="col">
+                    <h6>Edad:</h6>
+                    <p><span th:text="${citaAgendada.cliente.getEdad()}"></span> años</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h6>Correo Electronico:</h6>
+                    <p th:text="${citaAgendada.cliente.getCorreo()}"></p>
+                </div>
+                <div class="col-5">
+                    <h6>Tratamiento a someterse:</h6>
+                    <p th:text="${citaAgendada.cita_id.getTratamiento()}"></p>
+                </div>
+            </div>
+            </div>
+            <!--Datos de la cita o consulta-->
+            <hr>
+            <div class="mt-5 fs-3">
+                <p style="font-size: 3vh" class="fw-bold">Datos de la cita:</p>
+                <div class="row">
+                    <div class="col">
+                        <h6>Tratamiento:</h6>
+                        <p th:text="${citaAgendada.cita_id.getTratamiento()}"></p>
+                    </div>
+                    <div class="col-6">
+                        <h6>Fecha de la cita:</h6>
+                        <p><span th:text="${citaAgendada.cita_id.getFechaCita().getYear()}"></span>/
+                            <span th:text="${citaAgendada.cita_id.getFechaCita().getMonth()}"></span>/
+                        <span th:text="${citaAgendada.cita_id.getFechaCita().getDayOfMonth()}"></span></p>
+                    </div>
+                    <div class="col">
+                        <h6>Hora:</h6>
+                        <p><span th:text="${citaAgendada.cita_id.getFechaCita().getHour()}"></span>:<span th:text="${citaAgendada.cita_id.getFechaCita().getMinute()}"></span></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h6>Medico a cargo:</h6>
+                        <p><span>Dr. </span><span  th:text="${citaAgendada.cita_id.getMedico_id().getNombre()}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <a th:href="@{/administrar/citasAgendadas}" class="btn btn-success btn-lg">Regresar a la lista</a>
             </div>
         </div>
-    </div>
-    <!--Listado de citas-->
-    <div class="container">
-        <div th:if="${msgError!=null}" class="alert alert-warning">
-            <h2 th:text="${msgError}" class="fw-bold fs-2"></h2>
-        </div>
-        <table class="table table-bordered mt-3 text-center">
-            <thead class="table-dark fw-bold">
-            <tr>
-                <td>Tratamiento</td>
-                <td>Fecha Cita</td>
-                <td>Estado</td>
-                <td>Doctor Asignado</td>
-                <td colspan="2"></td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="cita:${listaCitas}">
-                <td th:text="${cita.getTratamiento()}"></td>
-                <td th:text="${#temporals.format(cita.getFechaCita(), 'dd/MM/yyyy HH:mm')}"></td>
-                <td th:text="${cita.isDisponible()?'Disponible':'No Disponible'}" th:style="${cita.isDisponible()?'color: green;':
-                        'color: red;'}"></td>
-                <td>Dr. <span th:text="${cita.medico_id.nombre}"></span></td>
-                <td colspan="2">
-                    <a th:href="@{/citas/editar/{id}(id=${cita.getId()})}" class="btn btn-warning me-2">Editar</a><!-- Agregamos la clase "me-2" para agregar un margen a la derecha -->
-                    <button class="btn btn-danger delete-button" th:disabled="${!cita.isDisponible()}">Eliminar</button>
-                    <form th:action="@{/citas/{id}(id=${cita.getId()})}" id="delete-form" method="get"></form>
-                </td>
-            </tr>
-            </tbody>
-            <tfoot class="table-info text-center fw-bold fs-5">
-                <tr>
-                    <td colspan="5"><span>Citas Registradas: </span><span th:text="${cantidadCitas}"></span></td>
-                </tr>
-            </tfoot>
-        </table>
-        <div class="mt-4">
-            <a th:href="@{/citas/nuevaCita}" class="btn btn-primary fw-bold">Agregar Nueva Cita</a>
-            <a th:href="@{/administrar/citasAgendadas}" class="btn btn-secondary fw-bold">Administrar citas agendadas</a>
-        </div>
-    </div>
-</main>
+    </main>
 
 <footer class="footer mt-5 bg-info bg-gradient border border-warning border-3">
     <div class="container">
@@ -136,20 +147,5 @@
         </div>
     </div>
 </footer>
-<script>
-    const buttons = document.getElementsByClassName("delete-button")
-    for(let i=0;i<buttons.length;i++) {
-        buttons[i].addEventListener("click",eliminarCita)
-    }
-    function eliminarCita() {
-        const form_delete = document.getElementById("delete-form")
-
-        let yes= confirm("Seguro que deseas eliminar esta cita?")
-        if(yes) {
-            form_delete.submit();
-        }
-    }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
